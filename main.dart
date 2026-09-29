@@ -84,4 +84,28 @@ void main() {
     soDienThoai: "0123456789",
   ); //k cần theo thứ tự
   taoNguoiDung(ten: "Nguyễn Văn D", tuoi: 25); // chỉ truyền tên và tuổi
+
+  //Danh sách
+  List<String> danhMuc = ["Điện thoại", "Máy tính", "Tablet"];
+  var soNguyen = [1, 2, 3, 4, 5];
+  var rong = <double>[]; // danh sách rỗng kiểu double
+
+  //truy capaj
+  print(danhMuc[0]); //Điện thoại
+  print(danhMuc.first);
+  print(danhMuc.length);
+
+  danhMuc.add("Laptop"); //thêm phần tử vào cuối danh sách
+  danhMuc.insert(1, "Tai nghe"); //thêm phần tử vào vị trí 1
+  danhMuc.removeAt(2); //xóa phần tử tại vị trí 2
+  danhMuc.addAll(["Chuột", "Bàn phím"]); //thêm nhiều phần tử vào cuối danh sách
+  danhMuc.remove('Sách'); //xóa phần tử có giá trị là 'Sách'
+  danhMuc.removeAt(0); //xóa phần tử tại vị trí 0
+
+  //tìm kiếm
+  bool coTonTai = danhMuc.contains('Diện thoại'); //true nếu tồn tại, false nếu không tồn tại
+  int viTri = danhMuc.indexOf('Máy tính'); // trả về vị trí của phần tử, nếu không tồn tại trả về -1
+
+  //Toán tử spread ... và collection if, for
+  var danhSachMoi = [...danhMuc, "Máy ảnh"]; // Sao chép tất cả phần tử từ danhMuc và thêm "Máy ảnh"
 }
