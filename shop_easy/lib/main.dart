@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/home_page.dart';
+import 'package:flutter_application_1/img5.dart';
+import 'package:flutter_application_1/travel.dart'; // Import file travel.dart chứa TravelPage
 
 void main() {
-  runApp(myApp());
+  runApp(const MyApp());
 }
 
-class myApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(home: HomePage());
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TravelPage(), // Hiển thị TravelPage làm màn hình chính
+    );
   }
 }

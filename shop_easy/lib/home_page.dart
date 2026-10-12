@@ -4,6 +4,18 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Thực hành Widget'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            tooltip: 'Tìm kiếm',
+            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Bạn vừa bấm Tìm kiếm')),
+            ),
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           children: [
