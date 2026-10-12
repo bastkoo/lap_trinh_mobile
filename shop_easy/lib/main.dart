@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/img5.dart';
-import 'package:flutter_application_1/travel.dart'; // Import file travel.dart chứa TravelPage
+
+import 'student.dart'; // Import tương đối ngắn gọn và chính xác
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TravelPage(), // Hiển thị TravelPage làm màn hình chính
+      home: MyStudent(), // Hiển thị MyCounter làm màn hình chính
     );
   }
 }
