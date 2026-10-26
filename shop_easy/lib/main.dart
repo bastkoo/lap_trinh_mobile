@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'setting.dart';
 import 'language_controller.dart';
+import 'products.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           theme: ThemeData(primarySwatch: Colors.blue),
-          home: const MySettings(),
+          home: const ProductList(),
         );
       },
     );

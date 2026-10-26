@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'setting.dart';
 import 'hoso.dart';
 import 'language_controller.dart';
 
