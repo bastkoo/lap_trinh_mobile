@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'hoso.dart'; // Import tương đối ngắn gọn và chính xác
+import 'setting.dart';
+import 'language_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +13,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HoSo(), // Hiển thị MyCounter làm màn hình chính
+    return ValueListenableBuilder<Locale>(
+      valueListenable: LanguageController.locale,
+      builder: (context, locale, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Settings App',
+          locale: locale,
+          supportedLocales: const [Locale('vi'), Locale('en')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          theme: ThemeData(primarySwatch: Colors.blue),
+          home: const MySettings(),
+        );
+      },
     );
   }
 }
