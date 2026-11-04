@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'setting.dart';
+import 'dashboard_screen.dart';
 import 'hoso.dart';
 import 'language_controller.dart';
 
@@ -46,16 +46,7 @@ class _MySettingsState extends State<MySettings> {
       ),
       child: Scaffold(
         backgroundColor: backgroundColor,
-        appBar: AppBar(
-          backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          title: Text(
-            _text('Cài đặt', 'Settings'),
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
-        ),
+
         body: ListView(
           padding: const EdgeInsets.all(16),
           children: [
@@ -64,6 +55,41 @@ class _MySettingsState extends State<MySettings> {
               textColor,
               subtitleColor,
               primaryColor,
+            ),
+            const SizedBox(height: 24),
+
+            // Nhóm quản lý cửa hàng
+            _buildSectionTitle(
+              _text('Quản lý cửa hàng', 'Store management'),
+              textColor,
+            ),
+
+            const SizedBox(height: 10),
+
+            _buildSettingCard(
+              cardColor: cardColor,
+              children: [
+                // Trang tổng quan
+                _buildSettingTile(
+                  icon: Icons.dashboard_rounded,
+                  iconColor: Colors.blue,
+                  title: _text('Tổng quan', 'Dashboard'),
+                  subtitle: _text(
+                    'Thống kê hoạt động kinh doanh',
+                    'Business statistics',
+                  ),
+                  textColor: textColor,
+                  subtitleColor: subtitleColor,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DashboardScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
 
             const SizedBox(height: 24),
