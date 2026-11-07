@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'language_controller.dart';
 
 import 'quen_mat_khau_screen.dart';
 import 'dang_ky_screen.dart';
+import 'products.dart';
 
 class DangNhapScreen extends StatelessWidget {
   const DangNhapScreen({super.key});
@@ -9,7 +11,7 @@ class DangNhapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Đăng nhập')),
+      appBar: AppBar(title: Text(LanguageController.text('Đăng nhập', 'Log in'))),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Center(
@@ -19,16 +21,16 @@ class DangNhapScreen extends StatelessWidget {
               children: [
                 const Icon(Icons.lock_person, size: 80, color: Colors.blue),
                 const SizedBox(height: 16),
-                const Text(
-                  'Xin chào!',
+                Text(
+                  LanguageController.text('Xin chào!', 'Hello!'),
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 32),
 
                 // Ô nhập Tên đăng nhập
-                const TextField(
+                TextField(
                   decoration: InputDecoration(
-                    labelText: 'Tên đăng nhập hoặc Email',
+                    labelText: LanguageController.text('Tên đăng nhập hoặc Email', 'Username or email'),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person),
                   ),
@@ -36,10 +38,10 @@ class DangNhapScreen extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // Ô nhập Mật khẩu
-                const TextField(
+                TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Mật khẩu',
+                    labelText: LanguageController.text('Mật khẩu', 'Password'),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: Icon(Icons.visibility_off),
@@ -59,7 +61,7 @@ class DangNhapScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text('Quên mật khẩu?'),
+                    child: Text(LanguageController.text('Quên mật khẩu?', 'Forgot password?')),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -69,9 +71,16 @@ class DangNhapScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Đăng nhập',
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductList(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      LanguageController.text('Đăng nhập', 'Log in'),
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
@@ -82,7 +91,7 @@ class DangNhapScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Chưa có tài khoản?'),
+                    Text(LanguageController.text('Chưa có tài khoản?', "Don't have an account?")),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -92,7 +101,7 @@ class DangNhapScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      child: const Text('Đăng ký ngay'),
+                      child: Text(LanguageController.text('Đăng ký ngay', 'Register now')),
                     ),
                   ],
                 ),

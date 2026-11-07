@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'language_controller.dart';
+
+import 'dang_ky_screen.dart';
 
 class QuenMatKhauScreen extends StatelessWidget {
   const QuenMatKhauScreen({super.key});
@@ -6,21 +9,21 @@ class QuenMatKhauScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Quên mật khẩu')),
+      appBar: AppBar(title: Text(LanguageController.text('Quên mật khẩu', 'Forgot password'))),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Nhập email của bạn để khôi phục mật khẩu',
+            Text(
+              LanguageController.text('Nhập email của bạn để khôi phục mật khẩu', 'Enter your email to reset your password'),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 24),
-            const TextField(
+            TextField(
               decoration: InputDecoration(
-                labelText: 'Email của bạn',
+                labelText: LanguageController.text('Email của bạn', 'Your email'),
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.email),
               ),
@@ -30,9 +33,16 @@ class QuenMatKhauScreen extends StatelessWidget {
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  'Gửi yêu cầu',
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DangKyScreen(),
+                    ),
+                  );
+                },
+                child: Text(
+                  LanguageController.text('Gửi yêu cầu', 'Send request'),
                   style: TextStyle(fontSize: 16),
                 ),
               ),

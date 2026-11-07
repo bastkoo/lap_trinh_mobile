@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'language_controller.dart';
 
 class CartScreen extends StatefulWidget {
   final Map<String, int> cart;
   final Map<String, Map<String, dynamic>> products;
   final Function(Map<String, int>) onCartChanged;
-  final Function(int) onNavigationChanged;
+  final Function(int) onNavigationChanged; //Hàm callback để điều hướng sang màn hình khác
 
   const CartScreen({
     super.key,
-    required this.cart,
+    required this.cart, //required: tham số bắt buộc, cart là một Map chứa thông tin về giỏ hàng, với key là productId và value là quantity
     required this.products,
     required this.onCartChanged,
     required this.onNavigationChanged,
-  });
+  }); //hàm tạo có tham số bắt buộc là cart, products, onCartChanged và onNavigationChanged
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -55,9 +56,9 @@ class _CartScreenState extends State<CartScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Đã xóa ${removedProduct?['name']}'),
+        content: Text(LanguageController.text('Đã xóa ${removedProduct?['name']}', 'Removed ${removedProduct?['nameEn'] ?? removedProduct?['name']}')),
         action: SnackBarAction(
-          label: 'Hoàn tác',
+          label: LanguageController.text('Hoàn tác', 'Undo'),
           onPressed: () {
             setState(() {
               _localCart[productId] = removedQty ?? 1;
@@ -107,8 +108,8 @@ class _CartScreenState extends State<CartScreen> {
             color: Colors.grey,
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Giỏ hàng trống',
+          Text(
+            LanguageController.text('Giỏ hàng trống', 'Your cart is empty'),
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -122,7 +123,7 @@ class _CartScreenState extends State<CartScreen> {
               foregroundColor: Colors.white,
             ),
             onPressed: () => widget.onNavigationChanged(0),
-            child: const Text('Tiếp tục mua sắm'),
+            child: Text(LanguageController.text('Tiếp tục mua sắm', 'Continue shopping')),
           ),
         ],
       ),
@@ -185,7 +186,9 @@ class _CartScreenState extends State<CartScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      product['name'],
+                      LanguageController.isVietnamese
+                          ? product['name']
+                          : (product['nameEn'] ?? product['name']),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -269,7 +272,7 @@ class _CartScreenState extends State<CartScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Tổng tiền hàng:'),
+              Text(LanguageController.text('Tổng tiền hàng:', 'Subtotal:')),
               Text(
                 '${totalAmount.toInt()}đ',
                 style: const TextStyle(fontWeight: FontWeight.bold),
@@ -282,10 +285,10 @@ class _CartScreenState extends State<CartScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Phí vận chuyển:'),
+              Text(LanguageController.text('Phí vận chuyển:', 'Shipping fee:')),
               Text(
                 shippingFee == 0
-                    ? 'Miễn phí (Đơn từ 500k)'
+                    ? LanguageController.text('Miễn phí (Đơn từ 500k)', 'Free (orders over 500k)')
                     : '${shippingFee.toInt()}đ',
                 style: TextStyle(
                   color: shippingFee == 0 ? Colors.green : Colors.black,
@@ -300,8 +303,8 @@ class _CartScreenState extends State<CartScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Thanh toán:',
+              Text(
+                LanguageController.text('Thanh toán:', 'Total:'),
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
@@ -326,10 +329,10 @@ class _CartScreenState extends State<CartScreen> {
               ),
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Thanh toán thành công!')),
+                  SnackBar(content: Text(LanguageController.text('Thanh toán thành công!', 'Payment successful!'))),
                 );
               },
-              child: const Text('Thanh toán'),
+              child: Text(LanguageController.text('Thanh toán', 'Checkout')),
             ),
           ),
         ],
@@ -349,7 +352,7 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Giỏ hàng của tôi'),
+        title: Text(LanguageController.text('Giỏ hàng của tôi', 'My cart')),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => widget.onNavigationChanged(0),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'language_controller.dart';
 
 class HoSo extends StatelessWidget {
   const HoSo({super.key});
@@ -6,10 +7,10 @@ class HoSo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100], // M�u n?n x�m nh?t hi?n d?i
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text(
-          'H? so c� nh�n',
+        title: Text(
+          LanguageController.text('Hồ sơ cá nhân', 'Personal profile'),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -32,7 +33,7 @@ class HoSo extends StatelessWidget {
     );
   }
 
-  // Kh?i 1: ?nh b�a, ?nh d?i di?n, T�n v� S? di?n tho?i
+  // Khối 1: Ảnh bìa, ảnh đại diện, tên và số điện thoại.
   Widget block1() {
     return Container(
       color: Colors.white,
@@ -42,14 +43,12 @@ class HoSo extends StatelessWidget {
             clipBehavior: Clip.none,
             alignment: Alignment.center,
             children: [
-              // ?nh b�a
               Image.network(
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQnAN7ZiCfLDDw0A-dpm3TsHc69Puk6mevZQ-wfYkEBzysb_73Hke9Bz6w&s=10',
                 width: double.infinity,
                 height: 180,
                 fit: BoxFit.cover,
               ),
-              // ?nh d?i di?n d?t d� l�n ?nh b�a
               Positioned(
                 bottom: -50,
                 child: Container(
@@ -75,9 +74,8 @@ class HoSo extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 60),
-          // T�n ngu?i d�ng
           const Text(
-            'Nguy?n Qu?c �?t',
+            'Nguyễn Quốc Đạt',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -85,7 +83,6 @@ class HoSo extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          // S? di?n tho?i
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
@@ -103,7 +100,7 @@ class HoSo extends StatelessWidget {
     );
   }
 
-  // Kh?i 2: C�c th�ng s? (B�i vi?t, Ngu?i theo d�i...) b?c trong Card
+  // Khối 2: Các thông số bài viết và người theo dõi.
   Widget block2() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -115,11 +112,11 @@ class HoSo extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildStatItem('8', 'B�i vi?t'),
+              _buildStatItem('8', LanguageController.text('Bài viết', 'Posts')),
               _buildDividerVertical(),
-              _buildStatItem('4', 'Ngu?i theo d�i'),
+              _buildStatItem('4', LanguageController.text('Người theo dõi', 'Followers')),
               _buildDividerVertical(),
-              _buildStatItem('2', '�ang theo d�i'),
+              _buildStatItem('2', LanguageController.text('Đang theo dõi', 'Following')),
             ],
           ),
         ),
@@ -127,7 +124,6 @@ class HoSo extends StatelessWidget {
     );
   }
 
-  // Widget con h? tr? t?o t?ng m?c th?ng k�
   Widget _buildStatItem(String count, String label) {
     return Column(
       children: [
@@ -148,18 +144,16 @@ class HoSo extends StatelessWidget {
     );
   }
 
-  // D�ng k? d?c ngan c�ch gi?a c�c s? li?u
   Widget _buildDividerVertical() {
     return Container(height: 24, width: 1, color: Colors.grey.withOpacity(0.3));
   }
 
-  // Kh?i 3: C�c n�t h�nh d?ng (Theo d�i, Nh?n tin)
+  // Khối 3: Các nút theo dõi và nhắn tin.
   Widget block3() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
-          // N�t Theo d�i (Expanded d? t? d?ng gi�n d?u)
           Expanded(
             child: ElevatedButton.icon(
               onPressed: () {},
@@ -172,14 +166,13 @@ class HoSo extends StatelessWidget {
                 ),
               ),
               icon: const Icon(Icons.person_add, size: 18),
-              label: const Text(
-                'Theo d�i',
+              label: Text(
+                LanguageController.text('Theo dõi', 'Follow'),
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ),
           const SizedBox(width: 12),
-          // N�t Nh?n tin
           Expanded(
             child: OutlinedButton.icon(
               onPressed: () {},
@@ -192,8 +185,8 @@ class HoSo extends StatelessWidget {
                 ),
               ),
               icon: const Icon(Icons.message, size: 18),
-              label: const Text(
-                'Nh?n tin',
+              label: Text(
+                LanguageController.text('Nhắn tin', 'Message'),
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),

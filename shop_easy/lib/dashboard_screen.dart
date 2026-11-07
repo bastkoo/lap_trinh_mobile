@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'language_controller.dart';
 
 // =====================================================
 // 1. MODEL ĐƠN HÀNG
@@ -76,8 +77,8 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Tổng quan',
+        title: Text(
+          LanguageController.text('Tổng quan', 'Dashboard'),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -112,18 +113,18 @@ class DashboardScreen extends StatelessWidget {
   // =====================================================
 
   Widget _buildPageHeader() {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(16, 20, 16, 12),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Xin chào, Admin!',
+            LanguageController.text('Xin chào, Admin!', 'Hello, Admin!'),
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 4),
           Text(
-            'Dưới đây là tình hình kinh doanh của cửa hàng.',
+            LanguageController.text('Dưới đây là tình hình kinh doanh của cửa hàng.', 'Here is your store performance overview.'),
             style: TextStyle(fontSize: 13, color: Colors.grey),
           ),
         ],
@@ -150,31 +151,31 @@ class DashboardScreen extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        childAspectRatio: width > 600 ? 1.5 : 1.25,
+        childAspectRatio: width > 600 ? 1.5 : 1.05,
         children: [
           StatisticCard(
-            title: 'Đơn hàng',
+            title: LanguageController.text('Đơn hàng', 'Orders'),
             value: '$totalOrders',
             icon: Icons.shopping_bag_outlined,
             color: Colors.blue,
           ),
 
           StatisticCard(
-            title: 'Doanh thu',
+            title: LanguageController.text('Doanh thu', 'Revenue'),
             value: revenue,
             icon: Icons.account_balance_wallet_outlined,
             color: Colors.green,
           ),
 
           StatisticCard(
-            title: 'Khách hàng',
+            title: LanguageController.text('Khách hàng', 'Customers'),
             value: '$totalCustomers',
             icon: Icons.people_outline,
             color: Colors.orange,
           ),
 
           StatisticCard(
-            title: 'Sản phẩm',
+            title: LanguageController.text('Sản phẩm', 'Product'),
             value: '$totalProducts',
             icon: Icons.inventory_2_outlined,
             color: Colors.purple,
@@ -194,8 +195,8 @@ class DashboardScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'Đơn hàng gần đây',
+          Text(
+            LanguageController.text('Đơn hàng gần đây', 'Recent orders'),
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
           ),
 
@@ -203,7 +204,7 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () {
               // TODO: Chuyển sang trang quản lý đơn hàng
             },
-            child: const Text('Xem tất cả'),
+            child: Text(LanguageController.text('Xem tất cả', 'View all')),
           ),
         ],
       ),
@@ -236,45 +237,47 @@ class StatisticCard extends StatelessWidget {
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Icon hình tròn
-            Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.12),
-                shape: BoxShape.circle,
+        padding: const EdgeInsets.all(8),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Icon hình tròn
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: color, size: 21),
               ),
-              child: Icon(icon, color: color, size: 21),
-            ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 6),
 
-            // Số liệu lớn
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              alignment: Alignment.centerLeft,
-              child: Text(
+              // Số liệu lớn
+              Text(
                 value,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
 
-            const SizedBox(height: 4),
+              const SizedBox(height: 2),
 
-            // Nhãn
-            Text(
-              title,
-              style: const TextStyle(fontSize: 13, color: Colors.grey),
-            ),
-          ],
+              // Nhãn
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 13, color: Colors.grey),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -389,7 +392,12 @@ class RecentOrderItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                order.status,
+                LanguageController.text(
+                  order.status,
+                  order.status == 'Hoàn thành' ? 'Completed' :
+                  order.status == 'Đang giao' ? 'Shipping' :
+                  order.status == 'Đã hủy' ? 'Cancelled' : 'Pending',
+                ),
                 style: TextStyle(
                   color: statusColor,
                   fontSize: 10,

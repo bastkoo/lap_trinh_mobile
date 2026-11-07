@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'dashboard_screen.dart';
+import 'dangnhap.dart';
+import 'font_size_controller.dart';
 import 'hoso.dart';
 import 'language_controller.dart';
+import 'theme_controller.dart';
 
 class MySettings extends StatefulWidget {
   const MySettings({super.key});
@@ -12,12 +15,8 @@ class MySettings extends StatefulWidget {
 }
 
 class _MySettingsState extends State<MySettings> {
-  bool _darkMode = false;
   bool _notifications = true;
   bool _rememberLogin = true;
-
-  // Cỡ chữ có thể chọn từ 12 đến 24.
-  double _fontSize = 16;
 
   String _text(String vi, String en) {
     return LanguageController.text(vi, en);
@@ -25,235 +24,249 @@ class _MySettingsState extends State<MySettings> {
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = _darkMode
+    final Color backgroundColor = ThemeController.isDarkMode
         ? const Color(0xFF121212)
         : const Color(0xFFF5F6FA);
 
-    final Color cardColor = _darkMode ? const Color(0xFF1E1E1E) : Colors.white;
+    final Color cardColor = ThemeController.isDarkMode
+        ? const Color(0xFF1E1E1E)
+        : Colors.white;
 
-    final Color textColor = _darkMode ? Colors.white : const Color(0xFF202124);
+    final Color textColor = ThemeController.isDarkMode
+        ? Colors.white
+        : const Color(0xFF202124);
 
-    final Color subtitleColor = _darkMode
+    final Color subtitleColor = ThemeController.isDarkMode
         ? Colors.white70
         : Colors.grey.shade600;
 
     final Color primaryColor = Colors.blue.shade700;
 
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-        // Quy đổi cỡ chữ đã chọn sang hệ số hiển thị.
-        textScaler: TextScaler.linear(_fontSize / 16),
-      ),
-      child: Scaffold(
-        backgroundColor: backgroundColor,
+    return Scaffold(
+      backgroundColor: backgroundColor,
 
-        body: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            _buildProfileHeader(
-              cardColor,
-              textColor,
-              subtitleColor,
-              primaryColor,
-            ),
-            const SizedBox(height: 24),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          _buildProfileHeader(
+            cardColor,
+            textColor,
+            subtitleColor,
+            primaryColor,
+          ),
+          const SizedBox(height: 24),
 
-            // Nhóm quản lý cửa hàng
-            _buildSectionTitle(
-              _text('Quản lý cửa hàng', 'Store management'),
-              textColor,
-            ),
+          // Nhóm quản lý cửa hàng
+          _buildSectionTitle(
+            _text('Quản lý cửa hàng', 'Store management'),
+            textColor,
+          ),
 
-            const SizedBox(height: 10),
+          const SizedBox(height: 10),
 
-            _buildSettingCard(
-              cardColor: cardColor,
-              children: [
-                // Trang tổng quan
-                _buildSettingTile(
-                  icon: Icons.dashboard_rounded,
-                  iconColor: Colors.blue,
-                  title: _text('Tổng quan', 'Dashboard'),
-                  subtitle: _text(
-                    'Thống kê hoạt động kinh doanh',
-                    'Business statistics',
-                  ),
-                  textColor: textColor,
-                  subtitleColor: subtitleColor,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const DashboardScreen(),
-                      ),
-                    );
-                  },
+          _buildSettingCard(
+            cardColor: cardColor,
+            children: [
+              // Trang tổng quan
+              _buildSettingTile(
+                icon: Icons.dashboard_rounded,
+                iconColor: Colors.blue,
+                title: _text('Tổng quan', 'Dashboard'),
+                subtitle: _text(
+                  'Thống kê hoạt động kinh doanh',
+                  'Business statistics',
                 ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            _buildSectionTitle(
-              _text('Tùy chỉnh giao diện', 'Appearance'),
-              textColor,
-            ),
-
-            const SizedBox(height: 10),
-
-            _buildSettingCard(
-              cardColor: cardColor,
-              children: [
-                _buildSettingTile(
-                  icon: Icons.format_size_rounded,
-                  iconColor: Colors.deepPurple,
-                  title: _text('Cỡ chữ', 'Font size'),
-                  subtitle:
-                      '${_text('Kích thước hiện tại', 'Current size')}: ${_fontSize.round()}',
-                  textColor: textColor,
-                  subtitleColor: subtitleColor,
-                  onTap: _showFontSizeDialog,
-                ),
-                _buildDivider(),
-                _buildSettingTile(
-                  icon: Icons.language_rounded,
-                  iconColor: Colors.blue,
-                  title: _text('Ngôn ngữ', 'Language'),
-                  subtitle: LanguageController.isVietnamese
-                      ? 'Tiếng Việt'
-                      : 'English',
-                  textColor: textColor,
-                  subtitleColor: subtitleColor,
-                  onTap: _showLanguageBottomSheet,
-                ),
-                _buildDivider(),
-                _buildSwitchTile(
-                  icon: Icons.dark_mode_rounded,
-                  iconColor: Colors.indigo,
-                  title: _text('Chế độ tối', 'Dark mode'),
-                  subtitle: _text(
-                    'Sử dụng giao diện tối',
-                    'Use dark appearance',
-                  ),
-                  value: _darkMode,
-                  textColor: textColor,
-                  subtitleColor: subtitleColor,
-                  onChanged: (value) {
-                    setState(() {
-                      _darkMode = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            _buildSectionTitle(
-              _text('Tài khoản và thông báo', 'Account and notifications'),
-              textColor,
-            ),
-
-            const SizedBox(height: 10),
-
-            _buildSettingCard(
-              cardColor: cardColor,
-              children: [
-                _buildSwitchTile(
-                  icon: Icons.notifications_active_rounded,
-                  iconColor: Colors.orange,
-                  title: _text('Thông báo', 'Notifications'),
-                  subtitle: _text(
-                    'Bật hoặc tắt thông báo',
-                    'Turn notifications on or off',
-                  ),
-                  value: _notifications,
-                  textColor: textColor,
-                  subtitleColor: subtitleColor,
-                  onChanged: (value) {
-                    setState(() {
-                      _notifications = value;
-                    });
-                  },
-                ),
-                _buildDivider(),
-                _buildSwitchTile(
-                  icon: Icons.lock_rounded,
-                  iconColor: Colors.green,
-                  title: _text('Ghi nhớ đăng nhập', 'Remember login'),
-                  subtitle: _text(
-                    'Giữ trạng thái đăng nhập',
-                    'Keep your login preference',
-                  ),
-                  value: _rememberLogin,
-                  textColor: textColor,
-                  subtitleColor: subtitleColor,
-                  onChanged: (value) {
-                    setState(() {
-                      _rememberLogin = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            _buildSectionTitle(
-              _text('Thông tin ứng dụng', 'Application information'),
-              textColor,
-            ),
-
-            const SizedBox(height: 10),
-
-            _buildSettingCard(
-              cardColor: cardColor,
-              children: [
-                _buildSettingTile(
-                  icon: Icons.person_outline_rounded,
-                  iconColor: Colors.teal,
-                  title: _text('Hồ sơ cá nhân', 'Personal profile'),
-                  subtitle: _text(
-                    'Xem thông tin cá nhân',
-                    'View personal information',
-                  ),
-                  textColor: textColor,
-                  subtitleColor: subtitleColor,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HoSo()),
-                    );
-                  },
-                ),
-                _buildDivider(),
-                _buildSettingTile(
-                  icon: Icons.info_outline_rounded,
-                  iconColor: Colors.blueGrey,
-                  title: _text('Về ứng dụng', 'About'),
-                  subtitle: _text(
-                    'Thông tin người phát triển',
-                    'Developer information',
-                  ),
-                  textColor: textColor,
-                  subtitleColor: subtitleColor,
-                  onTap: _showAboutDialog,
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 28),
-
-            Center(
-              child: Text(
-                '© ${DateTime.now().year}',
-                style: TextStyle(color: subtitleColor, fontSize: 12),
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DashboardScreen(),
+                    ),
+                  );
+                },
               ),
-            ),
+            ],
+          ),
 
-            const SizedBox(height: 20),
-          ],
-        ),
+          const SizedBox(height: 24),
+
+          _buildSectionTitle(
+            _text('Tùy chỉnh giao diện', 'Appearance'),
+            textColor,
+          ),
+
+          const SizedBox(height: 10),
+
+          _buildSettingCard(
+            cardColor: cardColor,
+            children: [
+              _buildSettingTile(
+                icon: Icons.format_size_rounded,
+                iconColor: Colors.deepPurple,
+                title: _text('Cỡ chữ', 'Font size'),
+                subtitle:
+                    '${_text('Kích thước hiện tại', 'Current size')}: ${FontSizeController.value.round()}',
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onTap: _showFontSizeDialog,
+              ),
+              _buildDivider(),
+              _buildSettingTile(
+                icon: Icons.language_rounded,
+                iconColor: Colors.blue,
+                title: _text('Ngôn ngữ', 'Language'),
+                subtitle: LanguageController.isVietnamese
+                    ? 'Tiếng Việt'
+                    : 'English',
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onTap: _showLanguageBottomSheet,
+              ),
+              _buildDivider(),
+              _buildSwitchTile(
+                icon: Icons.dark_mode_rounded,
+                iconColor: Colors.indigo,
+                title: _text('Chế độ tối', 'Dark mode'),
+                subtitle: _text('Sử dụng giao diện tối', 'Use dark appearance'),
+                value: ThemeController.isDarkMode,
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onChanged: (value) {
+                  ThemeController.setDarkMode(value);
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          _buildSectionTitle(
+            _text('Tài khoản và thông báo', 'Account and notifications'),
+            textColor,
+          ),
+
+          const SizedBox(height: 10),
+
+          _buildSettingCard(
+            cardColor: cardColor,
+            children: [
+              _buildSwitchTile(
+                icon: Icons.notifications_active_rounded,
+                iconColor: Colors.orange,
+                title: _text('Thông báo', 'Notifications'),
+                subtitle: _text(
+                  'Bật hoặc tắt thông báo',
+                  'Turn notifications on or off',
+                ),
+                value: _notifications,
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onChanged: (value) {
+                  setState(() {
+                    _notifications = value;
+                  });
+                },
+              ),
+              _buildDivider(),
+              _buildSwitchTile(
+                icon: Icons.lock_rounded,
+                iconColor: Colors.green,
+                title: _text('Ghi nhớ đăng nhập', 'Remember login'),
+                subtitle: _text(
+                  'Giữ trạng thái đăng nhập',
+                  'Keep your login preference',
+                ),
+                value: _rememberLogin,
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onChanged: (value) {
+                  setState(() {
+                    _rememberLogin = value;
+                  });
+                },
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          _buildSectionTitle(
+            _text('Thông tin ứng dụng', 'Application information'),
+            textColor,
+          ),
+
+          const SizedBox(height: 10),
+
+          _buildSettingCard(
+            cardColor: cardColor,
+            children: [
+              _buildSettingTile(
+                icon: Icons.person_outline_rounded,
+                iconColor: Colors.teal,
+                title: _text('Hồ sơ cá nhân', 'Personal profile'),
+                subtitle: _text(
+                  'Xem thông tin cá nhân',
+                  'View personal information',
+                ),
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HoSo()),
+                  );
+                },
+              ),
+              _buildDivider(),
+              _buildSettingTile(
+                icon: Icons.info_outline_rounded,
+                iconColor: Colors.blueGrey,
+                title: _text('Về ứng dụng', 'About'),
+                subtitle: _text(
+                  'Thông tin người phát triển',
+                  'Developer information',
+                ),
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onTap: _showAboutDialog,
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          _buildSettingCard(
+            cardColor: cardColor,
+            children: [
+              _buildSettingTile(
+                icon: Icons.logout_rounded,
+                iconColor: Colors.red,
+                title: _text('Đăng xuất', 'Log out'),
+                subtitle: _text(
+                  'Thoát tài khoản và quay về màn hình đăng nhập',
+                  'Sign out and return to the login screen',
+                ),
+                textColor: textColor,
+                subtitleColor: subtitleColor,
+                onTap: _confirmLogout,
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 28),
+
+          Center(
+            child: Text(
+              '© ${DateTime.now().year}',
+              style: TextStyle(color: subtitleColor, fontSize: 12),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
@@ -431,7 +444,7 @@ class _MySettingsState extends State<MySettings> {
 
   // Chọn cỡ chữ từ 12 đến 24.
   void _showFontSizeDialog() {
-    double selectedSize = _fontSize;
+    double selectedSize = FontSizeController.value;
 
     showDialog<void>(
       context: context,
@@ -465,9 +478,8 @@ class _MySettingsState extends State<MySettings> {
                           selectedSize = value;
                         });
 
-                        setState(() {
-                          _fontSize = value;
-                        });
+                        FontSizeController.setFontSize(value);
+                        setState(() {});
                       },
                     ),
                     const Row(
@@ -488,9 +500,8 @@ class _MySettingsState extends State<MySettings> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    setState(() {
-                      _fontSize = 16;
-                    });
+                    FontSizeController.setFontSize(16);
+                    setState(() {});
 
                     setDialogState(() {
                       selectedSize = 16;
@@ -540,6 +551,7 @@ class _MySettingsState extends State<MySettings> {
                       : null,
                   onTap: () {
                     LanguageController.changeLanguage('vi');
+                    setState(() {});
                     Navigator.pop(sheetContext);
                   },
                 ),
@@ -551,6 +563,7 @@ class _MySettingsState extends State<MySettings> {
                       : null,
                   onTap: () {
                     LanguageController.changeLanguage('en');
+                    setState(() {});
                     Navigator.pop(sheetContext);
                   },
                 ),
@@ -559,6 +572,37 @@ class _MySettingsState extends State<MySettings> {
           ),
         );
       },
+    );
+  }
+
+  void _confirmLogout() {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(_text('Xác nhận đăng xuất', 'Confirm logout')),
+        content: Text(
+          _text(
+            'Bạn có chắc chắn muốn đăng xuất không?',
+            'Are you sure you want to log out?',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(_text('Hủy', 'Cancel')),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const DangNhapScreen()),
+                (route) => false,
+              );
+            },
+            child: Text(_text('Đăng xuất', 'Log out')),
+          ),
+        ],
+      ),
     );
   }
 

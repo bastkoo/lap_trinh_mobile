@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'language_controller.dart';
 
 class ProductDetail extends StatefulWidget {
   final String productId;
@@ -40,16 +41,23 @@ class _ProductDetailState extends State<ProductDetail> {
     return [];
   }
 
-  String get _productName =>
-      widget.productData['name']?.toString() ?? 'Sản phẩm';
+  String get _productName {
+    if (LanguageController.isVietnamese) {
+      return widget.productData['name']?.toString() ??
+          LanguageController.text('Sản phẩm', 'Product');
+    }
+    return widget.productData['nameEn']?.toString() ??
+        widget.productData['name']?.toString() ??
+        'Product';
+  }
 
-  String get _price => widget.productData['priceStr']?.toString() ?? 'Liên hệ';
+  String get _price => widget.productData['priceStr']?.toString() ?? LanguageController.text('Liên hệ', 'Contact');
 
   String get _oldPrice => widget.productData['oldPrice']?.toString() ?? '';
 
   String get _description =>
       widget.productData['description']?.toString() ??
-      'Thông tin mô tả sản phẩm đang được cập nhật.';
+      LanguageController.text('Thông tin mô tả sản phẩm đang được cập nhật.', 'Product description is being updated.');
 
   @override
   void dispose() {
@@ -60,7 +68,7 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   Widget build(BuildContext context) {
     final images = _productImages;
-    final rating = widget.productData['rating']?.toString() ?? 'Chưa có';
+    final rating = widget.productData['rating']?.toString() ?? LanguageController.text('Chưa có', 'Not available');
     final reviewCount = widget.productData['reviewCount']?.toString() ?? '0';
     final discount = widget.productData['discount']?.toString() ?? '';
 
@@ -100,9 +108,9 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        SnackBar(
                           content: Text(
-                            'Chức năng yêu thích sẽ được bổ sung sau.',
+                            LanguageController.text('Chức năng yêu thích sẽ được bổ sung sau.', 'Wishlist feature coming soon.'),
                           ),
                         ),
                       );
@@ -228,7 +236,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       const Icon(Icons.star, size: 16, color: Colors.amber),
                       const SizedBox(width: 4),
                       Text(
-                        '$rating ($reviewCount đánh giá)',
+                        LanguageController.text('$rating ($reviewCount đánh giá)', '$rating ($reviewCount reviews)'),
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ],
@@ -263,22 +271,25 @@ class _ProductDetailState extends State<ProductDetail> {
                   const Divider(),
                   const SizedBox(height: 8),
 
-                  const Text(
-                    'Thông tin sản phẩm',
+                  Text(
+                    LanguageController.text('Thông tin sản phẩm', 'Product information'),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
 
-                  _InfoRow(label: 'Mã sản phẩm', value: widget.productId),
+                  _InfoRow(label: LanguageController.text('Mã sản phẩm', 'Product ID'), value: widget.productId),
                   _InfoRow(
-                    label: 'Danh mục',
-                    value: widget.productData['category']?.toString() ?? '—',
+                    label: LanguageController.text('Danh mục', 'Category'),
+                    value: LanguageController.text(
+                      widget.productData['category']?.toString() ?? '—',
+                      {'Áo thun': 'T-shirts', 'Quần jean': 'Jeans', 'Giày dép': 'Shoes', 'Phụ kiện': 'Accessories', 'Balo': 'Backpacks'}[widget.productData['category']?.toString()] ?? widget.productData['category']?.toString() ?? '—',
+                    ),
                   ),
-                  _InfoRow(label: 'Đánh giá', value: '$rating/5'),
+                  _InfoRow(label: LanguageController.text('Đánh giá', 'Reviews'), value: '$rating/5'),
 
                   const SizedBox(height: 16),
-                  const Text(
-                    'Mô tả sản phẩm',
+                  Text(
+                    LanguageController.text('Mô tả sản phẩm', 'Product description'),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
@@ -319,8 +330,8 @@ class _ProductDetailState extends State<ProductDetail> {
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(color: Colors.green),
                   ),
-                  child: const Text(
-                    'Thêm vào giỏ',
+                  child: Text(
+                    LanguageController.text('Thêm vào giỏ', 'Add to cart'),
                     style: TextStyle(color: Colors.green),
                   ),
                 ),
@@ -330,9 +341,9 @@ class _ProductDetailState extends State<ProductDetail> {
                 child: FilledButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text(
-                          'Chức năng mua ngay sẽ được bổ sung sau.',
+                          LanguageController.text('Chức năng mua ngay sẽ được bổ sung sau.', 'Buy now feature coming soon.'),
                         ),
                       ),
                     );

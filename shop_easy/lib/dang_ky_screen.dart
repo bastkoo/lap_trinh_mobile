@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'language_controller.dart';
+
+import 'dangnhap.dart';
 
 class DangKyScreen extends StatelessWidget {
   const DangKyScreen({super.key});
@@ -6,7 +9,7 @@ class DangKyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Đăng ký tài khoản')),
+      appBar: AppBar(title: Text(LanguageController.text('Đăng ký tài khoản', 'Create an account'))),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Center(
@@ -14,35 +17,35 @@ class DangKyScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const TextField(
+                TextField(
                   decoration: InputDecoration(
-                    labelText: 'Họ và tên',
+                    labelText: LanguageController.text('Họ và tên', 'Full name'),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.badge),
                   ),
                 ),
                 const SizedBox(height: 16),
-                const TextField(
+                TextField(
                   decoration: InputDecoration(
-                    labelText: 'Email hoặc Số điện thoại',
+                    labelText: LanguageController.text('Email hoặc Số điện thoại', 'Email or phone number'),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
                 ),
                 const SizedBox(height: 16),
-                const TextField(
+                TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Mật khẩu',
+                    labelText: LanguageController.text('Mật khẩu', 'Password'),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.lock),
                   ),
                 ),
                 const SizedBox(height: 16),
-                const TextField(
+                TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Xác nhận mật khẩu',
+                    labelText: LanguageController.text('Xác nhận mật khẩu', 'Confirm password'),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.lock_outline),
                   ),
@@ -52,9 +55,17 @@ class DangKyScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Đăng ký',
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DangNhapScreen(),
+                        ),
+                        (route) => false,
+                      );
+                    },
+                    child: Text(
+                      LanguageController.text('Đăng ký', 'Register'),
                       style: TextStyle(fontSize: 16),
                     ),
                   ),

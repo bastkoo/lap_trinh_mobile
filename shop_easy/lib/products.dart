@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'language_controller.dart';
+
 import 'setting.dart';
 import 'cart_screen.dart';
 import 'product_detail.dart';
@@ -32,6 +34,7 @@ class _ProductListState extends State<ProductList> {
   final Map<String, Map<String, dynamic>> products = {
     'SP01': {
       'name': 'Áo thun nam thời trang cao cấp cotton',
+      'nameEn': 'Premium cotton mens T-shirt',
       'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcre8GBb1zFgdcknZnpLMaximTofaK-cnVXkD-1WwcTA&s=10',
       'price': 150000,
       'priceStr': '150.000đ',
@@ -43,6 +46,7 @@ class _ProductListState extends State<ProductList> {
     },
     'SP02': {
       'name': 'Quần jean nam ống rộng phong cách Hàn Quốc',
+      'nameEn': 'Korean-style wide-leg mens jeans',
       'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcre8GBb1zFgdcknZnpLMaximTofaK-cnVXkD-1WwcTA&s=10',
       'price': 280000,
       'priceStr': '280.000đ',
@@ -54,6 +58,7 @@ class _ProductListState extends State<ProductList> {
     },
     'SP03': {
       'name': 'Giày sneaker thể thao nam nữ năng động',
+      'nameEn': 'Unisex sporty sneakers',
       'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcre8GBb1zFgdcknZnpLMaximTofaK-cnVXkD-1WwcTA&s=10',
       'price': 450000,
       'priceStr': '450.000đ',
@@ -65,6 +70,7 @@ class _ProductListState extends State<ProductList> {
     },
     'SP04': {
       'name': 'Balo laptop chống thấm nước thời trang',
+      'nameEn': 'Stylish water-resistant laptop backpack',
       'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcre8GBb1zFgdcknZnpLMaximTofaK-cnVXkD-1WwcTA&s=10',
       'price': 320000,
       'priceStr': '320.000đ',
@@ -89,7 +95,12 @@ class _ProductListState extends State<ProductList> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Đã thêm ${products[productId]!['name']} vào giỏ hàng!'),
+        content: Text(
+          LanguageController.text(
+            'Đã thêm ${products[productId]!['name']} vào giỏ hàng!',
+            'Added ${products[productId]!['nameEn'] ?? products[productId]!['name']} to cart!',
+          ),
+        ),
         duration: const Duration(seconds: 1),
       ),
     );
@@ -149,7 +160,9 @@ class _ProductListState extends State<ProductList> {
       );
     } else if (_selectedIndex == 2) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Cài đặt')),
+        appBar: AppBar(
+          title: Text(LanguageController.text('Cài đặt', 'Settings')),
+        ),
         body: const MySettings(),
         bottomNavigationBar: _buildBottomNavigationBar(),
       );
@@ -201,7 +214,10 @@ class _ProductListState extends State<ProductList> {
   Widget _buildSearchBox() {
     return TextField(
       decoration: InputDecoration(
-        hintText: 'Nhập tên sản phẩm...',
+        hintText: LanguageController.text(
+          'Nhập tên sản phẩm...',
+          'Search products...',
+        ),
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
@@ -230,7 +246,20 @@ class _ProductListState extends State<ProductList> {
           return Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: FilterChip(
-              label: Text(category),
+              label: Text(
+                LanguageController.text(
+                  category,
+                  {
+                        'Tất cả': 'All',
+                        'Áo thun': 'T-shirts',
+                        'Quần jean': 'Jeans',
+                        'Giày dép': 'Shoes',
+                        'Phụ kiện': 'Accessories',
+                        'Balo': 'Backpacks',
+                      }[category] ??
+                      category,
+                ),
+              ),
               selected: isSelected,
               onSelected: (selected) {
                 setState(() {
@@ -301,18 +330,21 @@ class _ProductListState extends State<ProductList> {
         });
       },
       destinations: [
-        const NavigationDestination(icon: Icon(Icons.home), label: 'Trang chủ'),
+        NavigationDestination(
+          icon: const Icon(Icons.home),
+          label: LanguageController.text('Trang chủ', 'Home'),
+        ),
         NavigationDestination(
           icon: Badge(
             label: Text('$_totalCartItems'),
             isLabelVisible: _totalCartItems > 0,
             child: const Icon(Icons.shopping_cart),
           ),
-          label: 'Giỏ hàng',
+          label: LanguageController.text('Giỏ hàng', 'Cart'),
         ),
-        const NavigationDestination(
-          icon: Icon(Icons.settings),
-          label: 'Cài đặt',
+        NavigationDestination(
+          icon: const Icon(Icons.settings),
+          label: LanguageController.text('Cài đặt', 'Settings'),
         ),
       ],
     );
@@ -402,7 +434,9 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    productData['name'],
+                    (LanguageController.isVietnamese
+                        ? productData['name']
+                        : (productData['nameEn'] ?? productData['name'])),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
@@ -467,8 +501,8 @@ class ProductCard extends StatelessWidget {
                     child: FilledButton.icon(
                       onPressed: onAddToCart,
                       icon: const Icon(Icons.add_shopping_cart, size: 12),
-                      label: const Text(
-                        'Thêm vào giỏ',
+                      label: Text(
+                        LanguageController.text('Thêm vào giỏ', 'Add to cart'),
                         style: TextStyle(fontSize: 10),
                       ),
                       style: FilledButton.styleFrom(
