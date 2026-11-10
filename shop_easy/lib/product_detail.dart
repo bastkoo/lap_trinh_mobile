@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'language_controller.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -51,16 +52,22 @@ class _ProductDetailState extends State<ProductDetail> {
         'Product';
   }
 
-  String get _price => widget.productData['priceStr']?.toString() ?? LanguageController.text('Liên hệ', 'Contact');
+  String get _price =>
+      widget.productData['priceStr']?.toString() ??
+      LanguageController.text('Liên hệ', 'Contact');
 
   String get _oldPrice => widget.productData['oldPrice']?.toString() ?? '';
 
   String get _description =>
       widget.productData['description']?.toString() ??
-      LanguageController.text('Thông tin mô tả sản phẩm đang được cập nhật.', 'Product description is being updated.');
+      LanguageController.text(
+        'Thông tin mô tả sản phẩm đang được cập nhật.',
+        'Product description is being updated.',
+      );
 
   @override
   void dispose() {
+    //dọn dẹp bộ nhớ
     _pageController.dispose();
     super.dispose();
   }
@@ -68,17 +75,21 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   Widget build(BuildContext context) {
     final images = _productImages;
-    final rating = widget.productData['rating']?.toString() ?? LanguageController.text('Chưa có', 'Not available');
+    final rating =
+        widget.productData['rating']?.toString() ??
+        LanguageController.text('Chưa có', 'Not available');
     final reviewCount = widget.productData['reviewCount']?.toString() ?? '0';
     final discount = widget.productData['discount']?.toString() ?? '';
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
+        // cho phép hiển thị nhiều kiểu khác nhau và 1 vùng cuộn thông qua slivers
         slivers: [
           SliverAppBar(
-            expandedHeight: 300,
-            pinned: true,
+            expandedHeight:
+                300, // chiều cao tối đa khi người dùng chưa cuộn đi đâu
+            pinned: true, // khi cuộn trang thì thanh appbar vẫn hiển thị
             backgroundColor: Colors.white,
             elevation: 0,
             leading: Padding(
@@ -110,7 +121,10 @@ class _ProductDetailState extends State<ProductDetail> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            LanguageController.text('Chức năng yêu thích sẽ được bổ sung sau.', 'Wishlist feature coming soon.'),
+                            LanguageController.text(
+                              'Chức năng yêu thích sẽ được bổ sung sau.',
+                              'Wishlist feature coming soon.',
+                            ),
                           ),
                         ),
                       );
@@ -236,7 +250,10 @@ class _ProductDetailState extends State<ProductDetail> {
                       const Icon(Icons.star, size: 16, color: Colors.amber),
                       const SizedBox(width: 4),
                       Text(
-                        LanguageController.text('$rating ($reviewCount đánh giá)', '$rating ($reviewCount reviews)'),
+                        LanguageController.text(
+                          '$rating ($reviewCount đánh giá)',
+                          '$rating ($reviewCount reviews)',
+                        ),
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ],
@@ -272,24 +289,44 @@ class _ProductDetailState extends State<ProductDetail> {
                   const SizedBox(height: 8),
 
                   Text(
-                    LanguageController.text('Thông tin sản phẩm', 'Product information'),
+                    LanguageController.text(
+                      'Thông tin sản phẩm',
+                      'Product information',
+                    ),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
 
-                  _InfoRow(label: LanguageController.text('Mã sản phẩm', 'Product ID'), value: widget.productId),
+                  _InfoRow(
+                    label: LanguageController.text('Mã sản phẩm', 'Product ID'),
+                    value: widget.productId,
+                  ),
                   _InfoRow(
                     label: LanguageController.text('Danh mục', 'Category'),
                     value: LanguageController.text(
                       widget.productData['category']?.toString() ?? '—',
-                      {'Áo thun': 'T-shirts', 'Quần jean': 'Jeans', 'Giày dép': 'Shoes', 'Phụ kiện': 'Accessories', 'Balo': 'Backpacks'}[widget.productData['category']?.toString()] ?? widget.productData['category']?.toString() ?? '—',
+                      {
+                            'Áo thun': 'T-shirts',
+                            'Quần jean': 'Jeans',
+                            'Giày dép': 'Shoes',
+                            'Phụ kiện': 'Accessories',
+                            'Balo': 'Backpacks',
+                          }[widget.productData['category']?.toString()] ??
+                          widget.productData['category']?.toString() ??
+                          '—',
                     ),
                   ),
-                  _InfoRow(label: LanguageController.text('Đánh giá', 'Reviews'), value: '$rating/5'),
+                  _InfoRow(
+                    label: LanguageController.text('Đánh giá', 'Reviews'),
+                    value: '$rating/5',
+                  ),
 
                   const SizedBox(height: 16),
                   Text(
-                    LanguageController.text('Mô tả sản phẩm', 'Product description'),
+                    LanguageController.text(
+                      'Mô tả sản phẩm',
+                      'Product description',
+                    ),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
@@ -343,7 +380,10 @@ class _ProductDetailState extends State<ProductDetail> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          LanguageController.text('Chức năng mua ngay sẽ được bổ sung sau.', 'Buy now feature coming soon.'),
+                          LanguageController.text(
+                            'Chức năng mua ngay sẽ được bổ sung sau.',
+                            'Buy now feature coming soon.',
+                          ),
                         ),
                       ),
                     );

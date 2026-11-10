@@ -47,7 +47,7 @@ class _ProductListState extends State<ProductList> {
     'SP02': {
       'name': 'Quần jean nam ống rộng phong cách Hàn Quốc',
       'nameEn': 'Korean-style wide-leg mens jeans',
-      'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcre8GBb1zFgdcknZnpLMaximTofaK-cnVXkD-1WwcTA&s=10',
+      'imageUrl': 'https://img.lazcdn.com/g/p/12e559ff910d296b40ae782a04be5424.jpg_720x720q80.jpg',
       'price': 280000,
       'priceStr': '280.000đ',
       'oldPrice': '350.000đ',
@@ -59,7 +59,7 @@ class _ProductListState extends State<ProductList> {
     'SP03': {
       'name': 'Giày sneaker thể thao nam nữ năng động',
       'nameEn': 'Unisex sporty sneakers',
-      'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcre8GBb1zFgdcknZnpLMaximTofaK-cnVXkD-1WwcTA&s=10',
+      'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT21AxJIg9maalHml9sQoOHSNDfwTNNUCpsX2wRz8PdzoMNqHpDKOI44S4&s=10',
       'price': 450000,
       'priceStr': '450.000đ',
       'oldPrice': '600.000đ',
@@ -71,7 +71,7 @@ class _ProductListState extends State<ProductList> {
     'SP04': {
       'name': 'Balo laptop chống thấm nước thời trang',
       'nameEn': 'Stylish water-resistant laptop backpack',
-      'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcre8GBb1zFgdcknZnpLMaximTofaK-cnVXkD-1WwcTA&s=10',
+      'imageUrl': 'https://bizweb.dktcdn.net/thumb/large/100/044/266/products/balo-rolltop-fix-laptop-15-6-inch-thiet-ke-sanh-dieu-thoi-trang-moi-nhat-kingbag-sofia-ii-14.jpg?v=1723513379603',
       'price': 320000,
       'priceStr': '320.000đ',
       'oldPrice': '400.000đ',
@@ -79,6 +79,60 @@ class _ProductListState extends State<ProductList> {
       'rating': 4.7,
       'reviewCount': 140,
       'category': 'Balo',
+    },
+    'SP05': {
+      'name': 'Tai nghe Bluetooth không dây',
+      'nameEn': 'Wireless Bluetooth headphones',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1505740420928-5e560c06d30e',
+      'price': 250000,
+      'priceStr': '250.000đ',
+      'oldPrice': '350.000đ',
+      'discount': '-29%',
+      'rating': 4.8,
+      'reviewCount': 125,
+      'category': 'Phụ kiện',
+    },
+
+    'SP06': {
+      'name': 'Đồng hồ thông minh thể thao',
+      'nameEn': 'Smart sports watch',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
+      'price': 450000,
+      'priceStr': '450.000đ',
+      'oldPrice': '600.000đ',
+      'discount': '-25%',
+      'rating': 4.6,
+      'reviewCount': 98,
+      'category': 'Phụ kiện',
+    },
+
+    'SP07': {
+      'name': 'Giày sneaker nam phong cách trẻ trung',
+      'nameEn': 'Stylish casual mens sneakers',
+      'imageUrl': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+      'price': 550000,
+      'priceStr': '550.000đ',
+      'oldPrice': '750.000đ',
+      'discount': '-27%',
+      'rating': 4.9,
+      'reviewCount': 210,
+      'category': 'Giày dép',
+    },
+
+    'SP08': {
+      'name': 'Áo thun nam cotton basic',
+      'nameEn': 'Basic cotton mens T-shirt',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab',
+      'price': 180000,
+      'priceStr': '180.000đ',
+      'oldPrice': '240.000đ',
+      'discount': '-25%',
+      'rating': 4.7,
+      'reviewCount': 165,
+      'category': 'Áo thun',
     },
   };
 
@@ -107,6 +161,7 @@ class _ProductListState extends State<ProductList> {
   }
 
   int get _totalCartItems {
+    // hàm tính tổng số lượng sản phẩm trong giỏ hàng
     return _cart.values.fold(0, (sum, element) => sum + element);
   }
 
@@ -118,6 +173,7 @@ class _ProductListState extends State<ProductList> {
     if (selectedProduct == null) return;
 
     Navigator.push(
+      //chồng lên màn hình chi tiết sản phẩm
       context,
       MaterialPageRoute(
         builder: (context) => ProductDetail(
@@ -127,7 +183,6 @@ class _ProductListState extends State<ProductList> {
           // Thêm sản phẩm vào giỏ hàng
           onAddToCart: () => _addToCart(productId),
 
-          // Chuyển sang tab giỏ hàng
           onGoToCart: () {
             setState(() {
               _selectedIndex = 1;
@@ -238,6 +293,7 @@ class _ProductListState extends State<ProductList> {
 
   Widget _buildCategoryList() {
     return SingleChildScrollView(
+      //giúp màn hình cuộn ngang trái phải
       scrollDirection: Axis.horizontal,
       child: Row(
         children: categories.map((category) {
@@ -293,14 +349,14 @@ class _ProductListState extends State<ProductList> {
     }).toList();
 
     return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: filteredProducts.length,
+      shrinkWrap: true, //chiếm 1 phần không gian, không chiếm toàn bộ màn hình
+      physics: const NeverScrollableScrollPhysics(), // vô hiệu hóa cuộn riêng của GridView, để SingleChildScrollView cuộn
+      itemCount: filteredProducts.length, // số lượng ô
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 0.60,
+        crossAxisCount: 2, // số cột
+        crossAxisSpacing: 12, // khoảng cách ngang giữa các ô
+        mainAxisSpacing: 12, // khoảng cách dọc giữa các ô
+        childAspectRatio: 0.60, // tỷ lệ chiều rộng/chiều cao của mỗi ô
       ),
       itemBuilder: (context, index) {
         final entry = filteredProducts[index];
@@ -372,11 +428,12 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 3, // độ nổi của thẻ = 3
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      clipBehavior: Clip.antiAlias,
+      clipBehavior: Clip.antiAlias, // cắt các góc tròn của thẻ và con bên trong
 
       child: InkWell(
+        // tạo hiệu ứng nhấn cho thẻ
         onTap: onTap,
 
         child: Column(
@@ -384,10 +441,12 @@ class ProductCard extends StatelessWidget {
           children: [
             // Ảnh sản phẩm
             Expanded(
+              //để phần ảnh chiếm hết không gian còn lại của thẻ ở nửa trên
               child: Stack(
+                //cho phép xếp chồng các lớp lên nhau
                 children: [
                   Container(
-                    width: double.infinity,
+                    width: double.infinity, // chiếm hết chiều ngang của thẻ
                     color: Colors.grey[300],
                     child: Image.network(
                       productData['imageUrl'],
@@ -403,7 +462,7 @@ class ProductCard extends StatelessWidget {
                   // Nhãn giảm giá
                   Positioned(
                     top: 8,
-                    left: 8,
+                    left: 8, // vị trí nhãn dán
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 6,

@@ -7,6 +7,9 @@ class FontSizeController {
   static double get value => fontSize.value;
 
   static void setFontSize(double size) {
-    fontSize.value = size.clamp(12.0, 24.0);
+    fontSize.value = size.clamp(
+      12.0,
+      24.0,
+    ); //.clamp(12.0, 24.0) để giới hạn cỡ chữ từ 12 đến 24
   }
 }

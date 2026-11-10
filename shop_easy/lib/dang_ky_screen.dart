@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'language_controller.dart';
 
 import 'dangnhap.dart';
@@ -9,17 +10,25 @@ class DangKyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(LanguageController.text('Đăng ký tài khoản', 'Create an account'))),
+      appBar: AppBar(
+        title: Text(
+          LanguageController.text('Đăng ký tài khoản', 'Create an account'),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Center(
           child: SingleChildScrollView(
+            // widget SingleChildScrollView để cho phép cuộn khi bàn phím xuất hiện
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
                   decoration: InputDecoration(
-                    labelText: LanguageController.text('Họ và tên', 'Full name'),
+                    labelText: LanguageController.text(
+                      'Họ và tên',
+                      'Full name',
+                    ),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.badge),
                   ),
@@ -27,7 +36,10 @@ class DangKyScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextField(
                   decoration: InputDecoration(
-                    labelText: LanguageController.text('Email hoặc Số điện thoại', 'Email or phone number'),
+                    labelText: LanguageController.text(
+                      'Email hoặc Số điện thoại',
+                      'Email or phone number',
+                    ),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
@@ -45,7 +57,10 @@ class DangKyScreen extends StatelessWidget {
                 TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: LanguageController.text('Xác nhận mật khẩu', 'Confirm password'),
+                    labelText: LanguageController.text(
+                      'Xác nhận mật khẩu',
+                      'Confirm password',
+                    ),
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.lock_outline),
                   ),
@@ -61,7 +76,8 @@ class DangKyScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => const DangNhapScreen(),
                         ),
-                        (route) => false,
+                        (route) =>
+                            false, // xóa sạch tất cả các màn hình trước đó
                       );
                     },
                     child: Text(

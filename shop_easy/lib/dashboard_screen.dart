@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'language_controller.dart';
 
 // =====================================================
@@ -84,6 +85,7 @@ class DashboardScreen extends StatelessWidget {
       ),
 
       body: CustomScrollView(
+        // kết hợp nhiều bố cục khác nhau trong một màn hình như list, grid, header, footer, v.v.
         slivers: [
           // Tiêu đề trang
           SliverToBoxAdapter(child: _buildPageHeader()),
@@ -124,7 +126,10 @@ class DashboardScreen extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Text(
-            LanguageController.text('Dưới đây là tình hình kinh doanh của cửa hàng.', 'Here is your store performance overview.'),
+            LanguageController.text(
+              'Dưới đây là tình hình kinh doanh của cửa hàng.',
+              'Here is your store performance overview.',
+            ),
             style: TextStyle(fontSize: 13, color: Colors.grey),
           ),
         ],
@@ -144,14 +149,16 @@ class DashboardScreen extends StatelessWidget {
     final crossAxisCount = width > 600 ? 4 : 2;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12), // căn trái phải 12px
       child: GridView.count(
-        crossAxisCount: crossAxisCount,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: width > 600 ? 1.5 : 1.05,
+        crossAxisCount: crossAxisCount, // số cột trên 1 dòng
+        shrinkWrap: true, // tự động co chiều cao theo nội dung
+        physics: const NeverScrollableScrollPhysics(), // vô hiệu hóa cuộn riêng của GridView, để CustomScrollView cuộn toàn bộ
+        crossAxisSpacing: 10, // khoảng cách giữa các cột
+        mainAxisSpacing: 10, // khoảng cách giữa các dòng
+        childAspectRatio: width > 600
+            ? 1.5
+            : 1.05, // tỷ lệ chiều rộng/chiều cao của mỗi ô
         children: [
           StatisticCard(
             title: LanguageController.text('Đơn hàng', 'Orders'),
@@ -199,13 +206,6 @@ class DashboardScreen extends StatelessWidget {
             LanguageController.text('Đơn hàng gần đây', 'Recent orders'),
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
           ),
-
-          TextButton(
-            onPressed: () {
-              // TODO: Chuyển sang trang quản lý đơn hàng
-            },
-            child: Text(LanguageController.text('Xem tất cả', 'View all')),
-          ),
         ],
       ),
     );
@@ -233,16 +233,18 @@ class StatisticCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      elevation: 2, // độ nổi của thẻ
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: FittedBox(
-          fit: BoxFit.scaleDown,
+          fit: BoxFit
+              .scaleDown, // tự động co nội dung nếu vượt quá kích thước thẻ
           alignment: Alignment.centerLeft,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize:
+                MainAxisSize.min, // tự động co chiều cao theo nội dung
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Icon hình tròn
@@ -394,9 +396,13 @@ class RecentOrderItem extends StatelessWidget {
               child: Text(
                 LanguageController.text(
                   order.status,
-                  order.status == 'Hoàn thành' ? 'Completed' :
-                  order.status == 'Đang giao' ? 'Shipping' :
-                  order.status == 'Đã hủy' ? 'Cancelled' : 'Pending',
+                  order.status == 'Hoàn thành'
+                      ? 'Completed'
+                      : order.status == 'Đang giao'
+                      ? 'Shipping'
+                      : order.status == 'Đã hủy'
+                      ? 'Cancelled'
+                      : 'Pending',
                 ),
                 style: TextStyle(
                   color: statusColor,
